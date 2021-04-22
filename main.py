@@ -1,6 +1,6 @@
 from telegram.ext import Updater, MessageHandler, Filters
 from telegram.ext import CallbackContext, CommandHandler
-from telegram import ReplyKeyboardMarkup, ParseMode
+from telegram import ReplyKeyboardMarkup, ParseMode, ReplyKeyboardRemove
 from telegram.utils import helpers
 
 # Напишем соответствующие функции.
@@ -47,7 +47,6 @@ def textbook(update, context):
 
 def in_parts_of_speech():
     update.message.reply_text('да')
-    pass
 
 
 def in_phonetics():
