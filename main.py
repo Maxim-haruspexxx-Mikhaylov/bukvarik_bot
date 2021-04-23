@@ -1,6 +1,6 @@
-from telegram.ext import Updater, MessageHandler, Filters
+from telegram.ext import Updater, MessageHandler, Filters, CallbackQueryHandler
 from telegram.ext import CallbackContext, CommandHandler
-from telegram import ReplyKeyboardMarkup, ParseMode, ReplyKeyboardRemove
+from telegram import ReplyKeyboardMarkup, ParseMode, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.utils import helpers
 
 # Напишем соответствующие функции.
@@ -17,59 +17,50 @@ def close_keyboard(update, context):
 
 def textbook(update, context):
     bot = context.bot
-    url_parts_of_speech = helpers.create_deep_linked_url(bot.username, 'parts-of-speech')
-    url_phonetics = helpers.create_deep_linked_url(bot.username, 'phonetics')
-    url_grammar = helpers.create_deep_linked_url(bot.username, 'grammar')
-    url_lexis = helpers.create_deep_linked_url(bot.username, 'lexis')
-    url_punctuation = helpers.create_deep_linked_url(bot.username, 'punctuation')
-    url_particles_and_conjunctions = helpers.create_deep_linked_url(bot.username, 'particles-and-conjunctions')
-    url_orphography = helpers.create_deep_linked_url(bot.username, 'orphography')
-    text = f'''Справочник:
-        
-    [Части речи]({url_parts_of_speech})
-    
-    [Фонетика]({url_phonetics})
-    
-    [Грамматика]({url_grammar})
-    
-    [Лексика]({url_lexis})
-    
-    [Пунктуация]({url_punctuation})
-    
-    [Частицы и союзы]({url_particles_and_conjunctions})
-    
-    [Орфография]({url_orphography})
-    '''
-    update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
+
+    update.message.reply_text(
+        "СПРАВОЧНИК",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton(text="Части речи", callback_data='parts-of-speech')],
+            [InlineKeyboardButton(text="Фонетика", callback_data='phonetics')],
+            [InlineKeyboardButton(text="Грамматика", callback_data='grammar')],
+            [InlineKeyboardButton(text="Лексика", callback_data='lexis')],
+            [InlineKeyboardButton(text="Пунктуация", callback_data='punctuation')],
+            [InlineKeyboardButton(text="Частицы и союзы", callback_data='particles-and-conjunctions')],
+            [InlineKeyboardButton(text="Орфография", callback_data='orphography')]]
+        ),
+    )
 # Определяем функцию-обработчик сообщений.
 # У неё два параметра, сам бот и класс updater, принявший сообщение.
 
 
-def in_parts_of_speech():
+def in_parts_of_speech(update, context):
+    bot = context.bot
+    update.callback_query.message.reply_text('да')
+
+
+def in_phonetics(update, context):
     update.message.reply_text('да')
-
-
-def in_phonetics():
     pass
 
 
-def in_grammar():
+def in_grammar(update, context):
     pass
 
 
-def in_lexis():
+def in_lexis(update, context):
     pass
 
 
-def in_punctuation():
+def in_punctuation(update, context):
     pass
 
 
-def in_particles_and_conjunctions():
+def in_particles_and_conjunctions(update, context):
     pass
 
 
-def in_orphography():
+def in_orphography(update, context):
     pass
 
 
@@ -107,14 +98,22 @@ def main():
     dp.add_handler(CommandHandler("textbook", textbook))
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("close", close_keyboard))
-    dp.add_handler(CommandHandler("start", in_parts_of_speech, Filters.regex('parts-of-speech')))
-    dp.add_handler(CommandHandler("start", in_phonetics, Filters.regex('phonetics')))
-    dp.add_handler(CommandHandler("start", in_grammar, Filters.regex('grammar')))
-    dp.add_handler(CommandHandler("start", in_lexis, Filters.regex('lexis')))
-    dp.add_handler(CommandHandler("start", in_punctuation, Filters.regex('punctuation')))
-    dp.add_handler(CommandHandler("start", in_particles_and_conjunctions, Filters.regex('particles-and-conjunctions')))
-    dp.add_handler(CommandHandler("start", in_orphography, Filters.regex('orphography')))
+#    dp.add_handler(CommandHandler("start", in_parts_of_speech, Filters.regex('parts-of-speech')))
+#    dp.add_handler(CommandHandler("start", in_phonetics, Filters.regex('phonetics')))
+#    dp.add_handler(CommandHandler("start", in_grammar, Filters.regex('grammar')))
+#    dp.add_handler(CommandHandler("start", in_lexis, Filters.regex('lexis')))
+#    dp.add_handler(CommandHandler("start", in_punctuation, Filters.regex('punctuation')))
+#    dp.add_handler(CommandHandler("start", in_particles_and_conjunctions, Filters.regex('particles-and-conjunctions')))
+#    dp.add_handler(CommandHandler("start", in_orphography, Filters.regex('orphography')))
     # Запускаем цикл приема и обработки сообщений.
+
+    dp.add_handler(CallbackQueryHandler(in_parts_of_speech, pattern='parts-of-speech'))
+    dp.add_handler(CallbackQueryHandler(in_phonetics, pattern='phonetics'))
+    dp.add_handler(CallbackQueryHandler(in_grammar, pattern='grammar'))
+    dp.add_handler(CallbackQueryHandler(in_lexis, pattern='lexis'))
+    dp.add_handler(CallbackQueryHandler(in_punctuation, pattern='punctuation'))
+    dp.add_handler(CallbackQueryHandler(in_particles_and_conjunctions, pattern='particles-and-conjunctions'))
+    dp.add_handler(CallbackQueryHandler(in_orphography, pattern='orphography'))
 
     updater.start_polling()
 
