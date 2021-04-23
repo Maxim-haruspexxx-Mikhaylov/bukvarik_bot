@@ -16,7 +16,6 @@ def close_keyboard(update, context):
 
 
 def textbook_1(update, context):
-    bot = context.bot
     names = os.listdir('themes')
     update.message.reply_text(
         "СПРАВОЧНИК",
@@ -86,7 +85,6 @@ def start(update, context):
         "Я бот-справочник. Какая информация вам нужна?",
         reply_markup=markup
     )
-    print('Done!')
 
 
 def main():
