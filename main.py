@@ -90,7 +90,7 @@ def start(update, context):
 
 
 def main():
-    token = '1797940789:AAENadc1txh59h5FX3Kd_DMUrBECpiYwu9g'
+    token = '1768206577:AAES8hYG8bIkbpY6JofKK9HQ4wCMq2TM0Ec'
 
     updater = Updater(token, use_context=True)
 
